@@ -2,6 +2,11 @@ name: Postman API E2E
 
 on:
   workflow_call:
+    secrets:
+      COLLECTION_ID:
+        required: true
+      ENVIRONMENT_ID:
+        required: true
 
 jobs:
   e2e-api-test:
