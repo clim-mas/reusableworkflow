@@ -5,7 +5,9 @@ on:
 
 jobs:
   e2e-api-test:
+    runs-on: ubuntu-latest
     env:
+      POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
       COLLECTION_ID: ${{ secrets.COLLECTION_ID }}
       ENVIRONMENT_ID: ${{ secrets.ENVIRONMENT_ID }}
     steps:
