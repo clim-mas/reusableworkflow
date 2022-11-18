@@ -3,6 +3,8 @@ name: Postman API E2E
 on:
   workflow_call:
     secrets:
+      POSTMAN_API_KEY:
+        required: true
       COLLECTION_ID:
         required: true
       ENVIRONMENT_ID:
