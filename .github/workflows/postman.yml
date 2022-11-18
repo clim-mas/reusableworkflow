@@ -1,0 +1,28 @@
+name: Postman API E2E
+
+on:
+  workflow_call:
+
+jobs:
+  e2e-api-test:
+    env:
+      COLLECTION_ID: ${{ secrets.COLLECTION_ID }}
+      ENVIRONMENT_ID: ${{ secrets.ENVIRONMENT_ID }}
+   steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+    - name: Install Newman
+      run: |
+        npm install -g newman newman-reporter-htmlextra
+    - name: Make Directory for Test Results
+      run: mkdir -p testArtifacts
+    - name: Run Postman Collection
+      run: |
+        newman run https://api.getpostman.com/collections/$COLLECTION_ID?apikey=$POSTMAN_API_KEY --environment https://api.getpostman.com/environments/$ENVIRONMENT_ID?apikey=$POSTMAN_API_KEY --suppress-exit-code --reporters cli,htmlextra --reporter-htmlextra-export testArtifacts/htmlreport.html
+    - name: Output the results
+      uses: actions/upload-artifact@v2
+      with:
+        name: Reports
+        path: testArtifacts
