@@ -44,10 +44,8 @@ jobs:
         id: testRail
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
-          runName="Web Cypress Test"
+          runName=$("${TESTRAILS_RUN_NAME}")
           runId=$(npx testrail-start-run "${runName}")
-          echo "TestRail run id ${runId}"
-          echo "::set-output name=runId::${runId}"
       - name: Cypress Test Run
         uses: cypress-io/github-action@v4
         with:
