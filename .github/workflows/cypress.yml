@@ -1,0 +1,49 @@
+name: Cypress UI E2E
+
+on:
+  workflow_call:
+    env:
+      WORKING_DIRECTORY:
+        required: true
+      TESTRAILS_RUN_NAME:
+        required: true
+    
+    
+jobs:
+  e2e-ui-test:
+    runs-on: ubuntu-latest
+    env:
+      TESTRAIL_HOST: ${{secrets.TESTRAIL_HOST}}
+      TESTRAIL_DOMAIN: ${{secrets.TESTRAIL_DOMAIN}}
+      TESTRAIL_USERNAME: ${{secrets.TESTRAIL_USERNAME}}
+      TESTRAIL_PASSWORD: ${{secrets.TESTRAIL_PASSWORD}}
+      TESTRAIL_APIKEY: ${{secrets.TESTRAIL_PASSWORD}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        uses: cypress-io/github-action@v4
+        with:
+          working-directory: ${{ WORKING_DIRECTORY }}
+          runTests: false
+      - name: Start TestRail Run
+        id: testRail
+        run: |
+          cd ${{ WORKING_DIRECTORY }}
+          runName="${{ TESTRAILS_RUN_NAME }}"
+          runId=$(npx testrail-start-run "${runId}"
+          echo "TestRail run id ${runId}"
+          echo "::set-output name=runId::${runId}"
+      - name: Cypress Test Run
+        uses: cypress-io/github-action@v4
+        with:
+          working-directory: ${{ WORKING_DIRECTORY }}
+          install-command: echo "Already installed"
+        env:
+          TESTRAIL_RUN_ID: ${{ steps.testRail.outputs.runId }}
+      - name: Close TestRail Run
+        if: ${{ always() }}
+        run: |
+          cd ${{ WORKING_DIRECTORY }}
+          npx testrail-close-run ${{ steps.testRail.outputs.runId }}
+      
