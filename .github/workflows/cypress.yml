@@ -47,7 +47,8 @@ jobs:
           runName="${TESTRAILS_RUN_NAME}"
           runId=$(npx testrail-start-run "${runName}")
           echo "TestRail run id ${runId}"
-          echo "{name}={runId}" >> $GITHUB_OUTPUT
+          echo "::set-output name=runId::${runId}"
+          # echo "{name}={runId}" >> $GITHUB_OUTPUT
       - name: Cypress Test Run
         uses: cypress-io/github-action@v4
         with:
