@@ -43,8 +43,8 @@ jobs:
       - name: Start TestRail Run
         id: testRail
         run: |
-          cd ${{ env.WORKING_DIRECTORY }}
-          runName="Test"
+          cd web
+          runName={{ env.TESTRAILS_RUN_NAME }}
           runId=$(npx testrail-start-run "${runId}"
           echo "TestRail run id ${runId}"
           echo "::set-output name=runId::${runId}"
