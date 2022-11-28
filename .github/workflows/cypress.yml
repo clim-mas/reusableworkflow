@@ -38,26 +38,26 @@ jobs:
       - name: Install
         uses: cypress-io/github-action@v4
         with:
-          working-directory: ${{ WORKING_DIRECTORY }}
+          working-directory: ${WORKING_DIRECTORY}
           runTests: false
       - name: Start TestRail Run
         id: testRail
         run: |
-          cd ${{ WORKING_DIRECTORY }}
-          runName="${{ TESTRAILS_RUN_NAME }}"
+          cd ${WORKING_DIRECTORY}
+          runName="${TESTRAILS_RUN_NAME}"
           runId=$(npx testrail-start-run "${runId}"
           echo "TestRail run id ${runId}"
           echo "::set-output name=runId::${runId}"
       - name: Cypress Test Run
         uses: cypress-io/github-action@v4
         with:
-          working-directory: ${{ WORKING_DIRECTORY }}
+          working-directory: ${WORKING_DIRECTORY}
           install-command: echo "Already installed"
         env:
           TESTRAIL_RUN_ID: ${{ steps.testRail.outputs.runId }}
       - name: Close TestRail Run
         if: ${{ always() }}
         run: |
-          cd ${{ WORKING_DIRECTORY }}
+          cd ${WORKING_DIRECTORY}
           npx testrail-close-run ${{ steps.testRail.outputs.runId }}
       
