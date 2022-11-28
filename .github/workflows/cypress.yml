@@ -2,10 +2,20 @@ name: Cypress UI E2E
 
 on:
   workflow_call:
-    env:
+    secrets:
       WORKING_DIRECTORY:
         required: true
       TESTRAILS_RUN_NAME:
+        required: true
+      TESTRAIL_HOST:
+        required: true
+      TESTRAIL_DOMAIN:
+        required: true
+      TESTRAIL_USERNAME:
+        required: true
+      TESTRAIL_PASSWORD:
+        required: true
+      TESTRAIL_APIKEY:
         required: true
     
     
@@ -13,6 +23,8 @@ jobs:
   e2e-ui-test:
     runs-on: ubuntu-latest
     env:
+      WORKING_DIRECTORY: ${{secrets.WORKING_DIRECTORY}}
+      TESTRAILS_RUN_NAME: ${{secrets.TESTRAILS_RUN_NAME}}
       TESTRAIL_HOST: ${{secrets.TESTRAIL_HOST}}
       TESTRAIL_DOMAIN: ${{secrets.TESTRAIL_DOMAIN}}
       TESTRAIL_USERNAME: ${{secrets.TESTRAIL_USERNAME}}
